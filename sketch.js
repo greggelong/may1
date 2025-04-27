@@ -12,7 +12,7 @@ let k; // Kick
 let b; // Bass
 let follow; // Follow object
 let speed = [1 / 2, 1 / 4, 1 / 8, 1 / 16];
-let ss = 0;
+let ss = 2;
 
 function preload() {
   gregimg = loadImage("monkey.jpg");
@@ -32,7 +32,7 @@ function setup() {
 
   // Set up synth sounds
   s = Synth("bleep").fx.add(Reverb());
-  s.note.seq(myseq, [speed[ss]]);
+  s.note.seq(myseq, [speed[ss], speed[ss + 1]]);
   s.loudness(0.2);
 
   k = Kick();
@@ -63,6 +63,7 @@ function draw() {
   }
 }
 
+/*
 function mousePressed() {
   if (mouseY < height / 2) {
     ss++;
@@ -79,6 +80,7 @@ function mousePressed() {
   s.note.seq(myseq, speed[ss]);
   s.loudness(0.7);
 }
+  */
 
 function unlockAudioContext() {
   const audioCtx = getAudioContext();
