@@ -28,7 +28,7 @@ function setup() {
 
   button = createButton("sound");
   button.position(width / 4, height / 2);
-  button.mouseClicked(unlockAllAudioContexts);
+  button.mouseClicked(unlockAudioContext);
 
   // Set up synth sounds
   s = Synth("bleep").fx.add(Reverb());
@@ -82,24 +82,18 @@ function mousePressed() {
 }
   */
 
-function unlockAllAudioContexts() {
-  // Unlock p5.js audio context
-  const p5AudioCtx = getAudioContext(); // p5.js's audio context
-  if (p5AudioCtx.state === "suspended") {
-    p5AudioCtx.resume().then(() => {
-      console.log("p5.js audio context unlocked");
-    });
+function unlockAudioContext() {
+  const audioCtx = getAudioContext();
+  if (audioCtx.state === "suspended") {
+    audioCtx
+      .resume()
+      .then(() => {
+        console.log("Audio context unlocked");
+      })
+      .catch((err) => {
+        console.error("Failed to unlock audio context:", err);
+      });
   }
-
-  // Unlock Gibber's audio context
-  const gibberAudioCtx = Gibber.audioContext; // Gibber's audio context
-  if (gibberAudioCtx.state === "suspended") {
-    gibberAudioCtx.resume().then(() => {
-      console.log("Gibber audio context unlocked");
-    });
-  }
-
-  // After unlocking, you can start your sound synthesis or any other logic
-  srate = 1; // Example for setting a default rate
-  button.hide(); // Hide the button after unlocking
+  srate = 1;
+  button.hide();
 }
