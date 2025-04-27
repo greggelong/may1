@@ -92,7 +92,7 @@ function unlockAllAudioContexts() {
   }
 
   // Unlock Gibber's audio context
-  const gibberAudioCtx = Gibberish.audioContext; // Gibber's audio context
+  const gibberAudioCtx = Gibber.audioContext; // Gibber's audio context
   if (gibberAudioCtx.state === "suspended") {
     gibberAudioCtx.resume().then(() => {
       console.log("Gibber audio context unlocked");
