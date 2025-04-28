@@ -5,6 +5,7 @@ let sliderPan;
 let srate = 1;
 let instruct;
 let button;
+let gibstart = false;
 
 let myseq = [7, 5, 7, 5, 5, 6, 7, 3];
 let s; // Synth
@@ -38,11 +39,9 @@ function loaded() {
 function draw() {
   let off = 20;
 
-  if (getAudioContext().state === "running") {
-    console.log("AudioContext is running!");
-    //off = follow.getValue() * 555;
+  if (gibstart) {
+    off = follow.getValue() * 555;
   } else {
-    console.log("AudioContext is NOT running yet.");
     off = 20;
   }
 
@@ -79,6 +78,7 @@ function mousePressed() {
 function startGibber() {
   // Set up synth sounds
   //Gibber.initialize();
+  gibstart = true;
 
   s = Synth("bleep").fx.add(Reverb());
   s.note.seq(myseq, [speed[ss], speed[ss + 1]]);
