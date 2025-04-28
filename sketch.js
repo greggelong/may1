@@ -24,36 +24,30 @@ function setup() {
   imageMode(CENTER);
 
   comp = loadSound("task1.mp3", loaded);
-  comp.setVolume(0.4);
 
   button = createButton("sound");
   button.position(width / 4, height / 2);
   button.mouseClicked(unlockAudioContext);
-
-  // Set up synth sounds
-  s = Synth("bleep").fx.add(Reverb());
-  s.note.seq(myseq, [speed[ss], speed[ss + 1]]);
-  s.loudness(0.2);
-
-  k = Kick();
-  k.note.seq([4], 1 / 4);
-
-  b = FM("bass");
-  b.note.seq([-7, -1, -3, -5], 1 / 16);
-  b.index.seq([2, 3, 4, 5, 6], 1 / 8);
-  b.loudness(1);
-
-  follow = Follow(b);
 }
 
 function loaded() {
   comp.loop();
+  comp.setVolume(0.4);
 }
 
 function draw() {
-  let off = follow.getValue() * 555;
+  let off = 20;
+
+  if (getAudioContext().state === "running") {
+    console.log("AudioContext is running!");
+    //off = follow.getValue() * 555;
+  } else {
+    console.log("AudioContext is NOT running yet.");
+    off = 20;
+  }
+
   //print(off);
-  background(follow.getValue() * 2055);
+  background(off);
 
   image(gregimg, width / 2, height / 2, 225 / srate + off, 300 / srate + off);
 
@@ -82,6 +76,25 @@ function mousePressed() {
 }
   */
 
+function startGibber() {
+  // Set up synth sounds
+  //Gibber.initialize();
+
+  s = Synth("bleep").fx.add(Reverb());
+  s.note.seq(myseq, [speed[ss], speed[ss + 1]]);
+  s.loudness(0.2);
+
+  k = Kick();
+  k.note.seq([4], 1 / 4);
+
+  b = FM("bass");
+  b.note.seq([-7, -1, -3, -5], 1 / 16);
+  b.index.seq([2, 3, 4, 5, 6], 1 / 8);
+  b.loudness(1);
+
+  follow = Follow(b);
+}
+
 function unlockAudioContext() {
   const audioCtx = getAudioContext();
   if (audioCtx.state === "suspended") {
@@ -96,4 +109,5 @@ function unlockAudioContext() {
   }
   srate = 1;
   button.hide();
+  startGibber();
 }
